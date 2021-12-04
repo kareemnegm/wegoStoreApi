@@ -20,8 +20,23 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password',  
+        'role',
     ];
+
+
+//user has  storeOwner
+
+public function storeOwner(){
+    return $this->hasOne(StoreOwner::class);
+}
+
+//user has  customer
+
+public function customer(){
+    return $this->hasOne(Customer::class);
+}
+
 
     /**
      * The attributes that should be hidden for serialization.

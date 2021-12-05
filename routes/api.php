@@ -13,4 +13,16 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix'=>'user'],function (){
+    Route::post('signup','User\AuthController@signup');
+});
 
+Route::group(['prefix'=>'country'],function (){
+    Route::post('/','Country\CountryController@storeCountry');
+    Route::post('/city','Country\CountryController@storeCity');
+
+    Route::get('/','Country\CountryController@countries');
+    Route::get('/cities','Country\CountryController@countries_cities');
+    Route::get('/city/{id}','Country\CountryController@cityFromCountry');//pass country id to retrieve cities
+
+});

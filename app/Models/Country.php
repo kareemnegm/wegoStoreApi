@@ -10,6 +10,10 @@ class Country extends Model
     use HasFactory;
     protected $fillable=[
        'name',
-       
+       'code',
     ];
+
+    public function city(){
+        return $this->hasMany(City::class);
+    }
 }

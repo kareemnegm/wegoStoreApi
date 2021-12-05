@@ -4,6 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\SignupFormRequest;
+use App\Models\Customer;
+use App\Models\StoreOwner;
+use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class AuthController extends Controller
 {
@@ -12,10 +18,61 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+    public function signup(SignupFormRequest $request)
     {
-        //
+           
+        $user = User::create(
+            [   'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role'=>$request->role,
+            ]);
+            // $user->assignRole($request->role); 
+                
+            if($user->role=='storeOwner'){
+              
+                $storeOwner=StoreOwner::create([
+                    'id'=>$user->id,
+                         ]);
+                         
+              $token = JWTAuth::fromUser($user);
+              $fullUser=User::find($user->id);
+              $fullstoreOwner=StoreOwner::find($user->id);
+              $responseData= collect($fullUser)->merge([
+                'storeOwner' => $fullstoreOwner,
+            ]);  
+            // $user->sendEmailVerificationNotification();
+
+              return $this->dataResponse(["user"=>$responseData,"token"=>$token]);
+            }
+            elseif($user->role=='customer')
+            {
+                if(!$request->city_id)
+                {
+                    return response()->json('must choose city',406); //unacceptable
+                }
+                
+                $customer=Customer::create([
+                    'id'=>$user->id,
+                    'city_id'=>$request->city_id,
+                ]);
+                $user->customer = ["city_id" => $customer->city_id];
+                $token = JWTAuth::fromUser($user);
+              $fullUser=User::find($user->id);
+
+                $responseData= collect($fullUser)->merge([
+                    'customer' => $customer,
+                ]);  
+                return $this->dataResponse(["user"=>$responseData,"token"=>$token]);
+            }
+          
+       
     }
+
+    
+    
+   
 
     /**
      * Show the form for creating a new resource.

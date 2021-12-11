@@ -17,12 +17,20 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('id',true);
             $table->string('name');
             $table->string('email')->unique();
+            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('city_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role');
             $table->rememberToken();
             $table->timestamps();
-        });
+               ///foreign keys
+
+               $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+               $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
+
+                });
+        
     }
 
     /**

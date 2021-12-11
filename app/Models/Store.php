@@ -12,8 +12,8 @@ class Store extends Model
         'name',
         'address',
         'currency',
-        'country',
-        'city,',
+        'country_id',
+        'city_id',
         'about',
         'logo',
         'is_active',
@@ -25,4 +25,15 @@ class Store extends Model
         'instagram',
         'twitter',
     ];
+    public function storeOwner(){
+        return $this->belongsTo(StoreOwner::class);
+    }
+
+    public function country(){
+        return $this->belongsTo('App\Models\Country','id','country_id');
+    }
+    
+    public function city(){
+        return $this->belongsTo('App\Models\City','id','City_id');
+    }
 }

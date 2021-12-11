@@ -18,6 +18,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',  
         'role',
+        'country_id',
+        'city_id'
     ];
 
 
@@ -33,7 +35,15 @@ public function customer(){
     return $this->hasOne(Customer::class);
 }
 
+// user belongs to country & city
 
+public function country(){
+    return $this->belongsTo('App\Models\Country','id','country_id');
+}
+
+public function city(){
+    return $this->belongsTo('App\Models\City','id','City_id');
+}
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -64,7 +74,10 @@ public function customer(){
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'id' => $this->id,
+                'role' =>$this->role
+        ];
     }
 
 }

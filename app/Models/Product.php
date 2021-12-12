@@ -12,12 +12,16 @@ class Product extends Model
         'name',
         'price',
         'quantity',
-        'product_tax',
         'product_display',
         'rating_display',
         'description',
         'detail',
-        'specification',
         'created_by',
     ];
+
+public function subcategory(){
+    return $this->belongsToMany(SubCategory::class);
+}
+
+
 }

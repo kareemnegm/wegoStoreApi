@@ -103,8 +103,6 @@ class AuthController extends Controller
         {
             $user=Auth::guard('api')->user();
 
-        
-        
             if($user->role=='storeOwner'){
                 $StoreOwner=StoreOwner::find($user->id);
                 

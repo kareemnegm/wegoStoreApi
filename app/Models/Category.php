@@ -10,7 +10,14 @@ class Category extends Model
     use HasFactory;
     protected $fillable=[
         'name',
-        'description'
+        'description',
+        'storeOwner_id'
     ];
+    public function storeOwner(){
+        return $this->belongsTo('App\Models\StoreOwner', 'id', 'storeOwner_id');
+    } 
     
+    public function subcategory(){
+        return $this->hasMany(SubCategory::class);
+    }
 }

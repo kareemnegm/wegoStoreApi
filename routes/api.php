@@ -19,6 +19,12 @@ Route::group(['prefix'=>'user'],function (){
 
 });
 
+Route::group(['prefix'=>'storeOwner','middleware'=>'assign.guard:api'],function (){
+Route::post('/category','Category\CategoryController@create');
+Route::put('/category/{id}','Category\CategoryController@update');
+Route::delete('/category/{id}','Category\CategoryController@destroy');
+
+});
 Route::group(['prefix'=>'country'],function (){
     Route::post('/','Country\CountryController@storeCountry');
     Route::post('/city','Country\CountryController@storeCity');

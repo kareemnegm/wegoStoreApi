@@ -19,12 +19,21 @@ Route::group(['prefix'=>'user'],function (){
 
 });
 
+Route::group(['prefix'=>'category'],function (){
+    Route::get('categories','Category\CategoryController@getCategory');
+
+
+});
+
 Route::group(['prefix'=>'storeOwner','middleware'=>'assign.guard:api'],function (){
 Route::post('/category','Category\CategoryController@create');
 Route::put('/category/{id}','Category\CategoryController@update');
 Route::delete('/category/{id}','Category\CategoryController@destroy');
+Route::post('/subcategory','Category\CategoryController@createSubcategory');
 
 });
+
+
 Route::group(['prefix'=>'country'],function (){
     Route::post('/','Country\CountryController@storeCountry');
     Route::post('/city','Country\CountryController@storeCity');

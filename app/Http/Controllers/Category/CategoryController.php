@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryController extends Controller
@@ -45,10 +47,48 @@ class CategoryController extends Controller
 
 
 
-    public function show($id)
+    public function createSubcategory(Request $request)
     {
-        //
+        $user=User::find(Auth::id());
+        if($user==null){
+            return response('not authenticated',500);
+        }else
+        {
+            if($user->id==Auth::user()->id){
+                if(Auth::user()->role=='storeOwner'){
+                    $category=Category::find($request->id);
+                    if($category==null){
+                        return response()->json('no catgeory found ',404);
+                    }
+                    else{
+                        if($category->storeOwner_id==Auth::id()){
+                            $sub_category=SubCategory::create([
+                                'name'=>$request->name,
+                                'category_id'=>$request->id
+                            ]);
+                            return response()->json($sub_category,201);
+                        }
+                    }
+                 
+                }
+                else 
+                {
+                    return response()->json('must signin as storeOwner',400);
+                }
+            }
+        }
     }
+
+
+
+    public function getCategory(){
+       $categories=Category::get();
+       return response()->json($categories,200);
+    }
+
+    public function getCategoryById(){
+        // ask ahmad about the categories created by every store owner 
+     }
 
 
     public function update(Request $request, $id)

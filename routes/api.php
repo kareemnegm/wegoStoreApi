@@ -34,6 +34,21 @@ Route::post('/subcategory','Category\CategoryController@createSubcategory');
 });
 
 
+Route::group(['prefix'=>'store'],function (){
+    Route::get('/','Store\StoreController@getStores');
+
+});
+
+
+
+Route::group(['prefix'=>'product'],function (){
+Route::post('/','Product\ProductController@createProduct')->middleware('assign.guard:api');
+
+});
+
+
+
+
 Route::group(['prefix'=>'country'],function (){
     Route::post('/','Country\CountryController@storeCountry');
     Route::post('/city','Country\CountryController@storeCity');

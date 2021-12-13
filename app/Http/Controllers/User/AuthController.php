@@ -53,20 +53,16 @@ class AuthController extends Controller
                     'whatsapp'=>$request->whatsapp,
                     'instagram'=>$request->instagram,
                     'twitter'=>$request->twitter,
-                    
+                    'store_owner_id'=>$user->id
                 ]); 
-                $storeOwner=StoreOwner::create([
-                    'id'=>$user->id,
-                    'store_id'=>$store->id
-                         ]);
+             
                       
 
               $token = JWTAuth::fromUser($user);
               $fullUser=User::find($user->id);
-              $storeOwner=StoreOwner::find($user->id);
-              $fullstoreOwner=$storeOwner->store()->get();
+           
               $responseData= collect($fullUser)->merge([
-                'storeOwner' => $fullstoreOwner,
+                'store' => $store,
             ]);  
             // $user->sendEmailVerificationNotification();
               return $this->dataResponse(["user"=>$responseData,"token"=>$token]);
@@ -104,13 +100,9 @@ class AuthController extends Controller
             $user=Auth::guard('api')->user();
 
             if($user->role=='storeOwner'){
-                $StoreOwner=StoreOwner::find($user->id);
-                
-                $responseData= collect($user)->merge([
-                    'StoreOwner' => $StoreOwner,
-                ]);  
+            
 
-                return $this->dataResponse(["user"=> $responseData,"token"=>$token]);
+                return $this->dataResponse(["user"=> $user,"token"=>$token]);
  
             }
             elseif($user->role=='customer'){

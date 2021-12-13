@@ -17,10 +17,10 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->unsignedBigInteger('storeOwner_id');
+            $table->unsignedBigInteger('store_owner_id');
             $table->timestamps();
             //foreihn key 
-            $table->foreign('storeOwner_id')->references('id')->on('store_owners')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('store_owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

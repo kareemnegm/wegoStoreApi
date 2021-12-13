@@ -32,7 +32,7 @@ class CategoryController extends Controller
                     $category=Category::create([
                         'name'=>$request->name,
                         'description'=>$request->description,
-                        'storeOwner_id'=>Auth::id()
+                        'store_owner_id'=>Auth::id()
                     ]);
                     return response()->json($category,201);
                 }
@@ -61,7 +61,7 @@ class CategoryController extends Controller
                         return response()->json('no catgeory found ',404);
                     }
                     else{
-                        if($category->storeOwner_id==Auth::id()){
+                        if($category->store_owner_id==Auth::id()){
                             $sub_category=SubCategory::create([
                                 'name'=>$request->name,
                                 'category_id'=>$request->id
@@ -98,7 +98,7 @@ class CategoryController extends Controller
            return response()->json('no categories found',404);
        }
        else{
-           if($category->storeOwner_id==Auth::id()){
+           if($category->store_owner_id==Auth::id()){
             $category->name=$request->name;
             $category->description=$request->description;
             $category->save();
@@ -123,7 +123,7 @@ class CategoryController extends Controller
         return response()->json('no categories found',404);
     }
     else{
-        if($category->storeOwner_id==Auth::id()){
+        if($category->store_owner_id==Auth::id()){
         $deleted=$category->delete();
 if($deleted==true){
 

@@ -11,10 +11,10 @@ class Category extends Model
     protected $fillable=[
         'name',
         'description',
-        'storeOwner_id'
+        'store_owner_id'
     ];
     public function storeOwner(){
-        return $this->belongsTo('App\Models\StoreOwner', 'id', 'storeOwner_id');
+        return $this->belongsTo('App\Models\StoreOwner', 'id', 'store_owner_id');
     } 
     
     public function subcategory(){

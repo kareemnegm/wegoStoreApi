@@ -30,11 +30,13 @@ class CreateStoresTable extends Migration
             $table->string('whatsapp');
             $table->string('instagram');
             $table->string('twitter');
+            $table->unsignedBigInteger('store_owner_id');
              $table->timestamps();
 
              //foreignkey
              $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
              $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
+             $table->foreign('store_owner_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
  
         });
     }

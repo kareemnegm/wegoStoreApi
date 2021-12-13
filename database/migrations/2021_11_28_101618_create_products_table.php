@@ -23,7 +23,10 @@ class CreateProductsTable extends Migration
             $table->string('description',1000);
             $table->string('detail',1000);
             $table->integer('created_by')->default(0);
-
+            $table->unsignedBigInteger('store_id');
+            $table->timestamps();
+            //foreign key 
+            $table->foreign('store_id')->references('id')->on('stores')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }

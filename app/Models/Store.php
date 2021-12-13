@@ -24,9 +24,14 @@ class Store extends Model
         'whatsapp',
         'instagram',
         'twitter',
+        'store_owner_id'
+        
     ];
-    public function storeOwner(){
-        return $this->belongsTo(StoreOwner::class);
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function country(){

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\Store;
+use App\Models\StoreOwner;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -12,9 +15,11 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getStores()
     {
-        //
+        $storeOwner=User::find(1);
+        $fex=$storeOwner->with('storeOwner')->get();
+        return $fex;
     }
 
     /**

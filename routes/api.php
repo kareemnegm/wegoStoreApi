@@ -45,6 +45,7 @@ Route::group(['prefix'=>'store'],function (){
 
 Route::group(['prefix'=>'product'],function (){
 Route::post('/','Product\ProductController@createProduct')->middleware('assign.guard:api');
+Route::delete('/{id}','Product\ProductController@destroy')->middleware('assign.guard:api');
 
 });
 

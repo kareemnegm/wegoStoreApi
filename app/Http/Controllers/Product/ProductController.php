@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\SubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,8 +36,9 @@ class ProductController extends Controller
                     if($subcat==null){
                         return response()->json('no subcategory found',406);
                     }else{
-                       $check=$subcat->category->storeOwner_id;
+                       $check=$subcat->category->store_owner_id;
                       if($check==Auth::id()){
+                          $storeID=Store::where('store_owner_id',Auth::id())->value('id');
                         $product=Product::create([
                             'name'=>$request->name,
                             'price'=>$request->price,
@@ -46,12 +48,12 @@ class ProductController extends Controller
                             'description'=>$request->description,
                             'detail'=>$request->detail,
                             'created_by'=>Auth::id(),
-                            // 'store_id'=>
+                            'store_id'=>$storeID
                         ]);
                        $product->subcategory()->attach($request->subcategory_id);
                         return response()->json($product,201);
                       }else{
-                          return response()->json('not authorized to add products to this subcategory its not users',401);
+                          return response()->json('not authorized to add products to this subcategory ',401);
                       }
                     }
                    
@@ -115,6 +117,32 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user=User::find(Auth::id());
+        if($user->role=='storeOwner'){
+            $store=Store::where('store_owner_id',$user->id)->exists();
+       if($store==true){
+        $store_id=Store::where('store_owner_id',$user->id)->value('id');
+    $product=Product::find($id);
+    if($product==null){
+        return response()->json('no product found',404);
     }
+    else{
+        if($product->store_id==$store_id){
+            $deleted=$product->delete();
+            if($deleted==true){
+                return response()->json('product has been deleted',200);
+            }
+            else{
+                return response()->json('error',500);
+            }
+        }
+    }
+             }  else{
+                 return response()->json(' store dosent exist for this user',403);
+             }         
+            
+        } 
+        
+     }
+      
 }

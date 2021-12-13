@@ -36,6 +36,8 @@ Route::post('/subcategory','Category\CategoryController@createSubcategory');
 
 Route::group(['prefix'=>'store'],function (){
     Route::get('/','Store\StoreController@getStores');
+    Route::get('/{id}','Store\StoreController@getstore');
+    Route::delete('/{id}','Store\StoreController@destroy');
 
 });
 

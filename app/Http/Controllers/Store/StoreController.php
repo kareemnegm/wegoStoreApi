@@ -17,53 +17,38 @@ class StoreController extends Controller
      */
     public function getStores()
     {
-        $storeOwner=User::find(1);
-        $fex=$storeOwner->with('storeOwner')->get();
-        return $fex;
+        $stores= Store::select('*')->get();
+        if($stores==null){
+            return response()->json('no stores yet',200);
+        }else{
+            return response()->json($stores,200);
+
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
-        //
+    //    in store owner creation
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+   
+
+   
+    public function getstore($id)
     {
-        //
+        $store=Store::find($id);
+        if($store==null){
+            return response()->json('no stores found',404);
+        }else{
+        $user=User::find($store->store_owner_id);
+        $response=collect($store)->merge([
+            'user'=>$user
+        ]); 
+        return response()->json($response,200);
+    }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -85,6 +70,18 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $store=Store::find($id);
+        if($store==null){
+            return response()->json('no store found',404);
+        }
+        else{
+            $deleted=$store->delete();
+            if($deleted==true){
+                return response()->json('store have been deleted',200);
+            }
+            else{
+                return response()->json('error occured',500);
+            }
+        }
     }
 }

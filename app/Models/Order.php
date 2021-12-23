@@ -15,13 +15,18 @@ class Order extends Model
         'card_exp_day',
         'card_exp_month',
         'card_exp_year',
-        'user_address_id',
-        'product_id',
         'shipping_data',
         'price',
-        'cupon',
+        'coupon',
         'net_price_discount',
         'status',
         
     ];
+    //order has many to  many  product
+    // pivot table
+public function product(){
+    return $this->belongsToMany(Product::class);
+
+}
+
 }

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'user'],function (){
     Route::post('signup','User\AuthController@signup');
     Route::post('login','User\AuthController@login');
+    Route::post('create/plan','StoreOwner\StoreOwnerController@createPlan');
 });
 
 Route::group(['prefix'=>'category'],function (){

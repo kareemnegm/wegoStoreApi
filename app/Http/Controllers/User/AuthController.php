@@ -56,7 +56,8 @@ class AuthController extends Controller
                     'whatsapp'=>$request->whatsapp,
                     'instagram'=>$request->instagram,
                     'twitter'=>$request->twitter,
-                    'store_owner_id'=>$user->id
+                    'store_owner_id'=>$user->id,
+                    'plan_id'=>$request->plan_id
                 ]);
 
 

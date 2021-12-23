@@ -24,8 +24,8 @@ class Store extends Model
         'whatsapp',
         'instagram',
         'twitter',
-        'store_owner_id'
-        
+        'store_owner_id',
+        'plan_id'
     ];
     public function product(){
         return $this->hasMany(Product::class);
@@ -37,8 +37,12 @@ class Store extends Model
     public function country(){
         return $this->belongsTo('App\Models\Country','id','country_id');
     }
-    
+
     public function city(){
         return $this->belongsTo('App\Models\City','id','City_id');
+    }
+
+    public function plan(){
+        return $this->belongsTo('App\Models\Plan','id','plan_id');
     }
 }

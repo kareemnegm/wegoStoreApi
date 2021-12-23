@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\StoreOwner;
 
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 
 class StoreOwnerController extends Controller
@@ -22,9 +23,10 @@ class StoreOwnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store()
     {
-        //
+
+
     }
 
     /**
@@ -33,9 +35,15 @@ class StoreOwnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createPlan(Request $request)
     {
-        //
+        $plan= Plan::create([
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'duration'=>$request->duration,
+            'maximum_product_per_store'=>$request->maximum_product_per_store
+        ]);
+        return response()->json($plan,201);
     }
 
     /**

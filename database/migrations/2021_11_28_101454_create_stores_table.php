@@ -37,7 +37,7 @@ class CreateStoresTable extends Migration
              $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
              $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
              $table->foreign('store_owner_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
- 
+
         });
     }
 

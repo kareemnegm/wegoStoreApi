@@ -16,11 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'user'],function (){
     Route::post('signup','User\AuthController@signup');
     Route::post('login','User\AuthController@login');
-
 });
 
 Route::group(['prefix'=>'category'],function (){
     Route::get('categories','Category\CategoryController@getCategory');
+
+
+});
+Route::group(['prefix'=>'customer','middleware'=>'assign.guard:api'],function (){
+    Route::post('/order','Order\OrderController@createOrder');
 
 
 });

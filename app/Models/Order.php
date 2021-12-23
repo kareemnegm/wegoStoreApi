@@ -20,12 +20,12 @@ class Order extends Model
         'coupon',
         'net_price_discount',
         'status',
-        
+
     ];
     //order has many to  many  product
     // pivot table
 public function product(){
-    return $this->belongsToMany(Product::class);
+    return $this->belongsToMany(Product::class,);
 
 }
 

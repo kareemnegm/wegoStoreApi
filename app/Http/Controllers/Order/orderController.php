@@ -3,83 +3,48 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CardVerificationRequest;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class orderController extends Controller
+class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //
+    public function createOrder(CardVerificationRequest $request)
     {
-        //
-    }
+        $productArray=[];
+        $user=User::find(Auth::id());
+        if($user==null){
+            return response('not authenticated',500);
+        }
+        else{
+            if($user->id==Auth::user()->id){
+                $validatedData = $request->validated();
+              
+                $order=Order::create([
+                    'name'=>$request->name,
+                    'email'=>Auth::user()->email,
+                    'card_number'=>$validatedData['card_number'],
+                    'card_exp_month'=>$validatedData['card_exp_month'],
+                    'card_exp_year'=>$validatedData['card_exp_year'],
+                    'card_exp_day'=>$request->day,
+                    'shipping_data'=>$request->shipping_data,
+                    'price'=>$request->price,
+                    'coupon'=>$request->coupon,
+                    'net_price_discount'=>$request->price,
+                    'status'=>0
+                ]);
+                $products=json_decode($request->products,true);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+                foreach($products as $product){
+                $productArray[]=$product;
+                }
+                $order->product()->attach($productArray);
+                return response()->json($order,201);
+            }
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

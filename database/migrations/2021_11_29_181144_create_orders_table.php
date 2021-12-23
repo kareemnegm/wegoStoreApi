@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->double('net_price_discount');
             $table->tinyInteger('status');
             $table->timestamps();
-            
+
         });
 
     }

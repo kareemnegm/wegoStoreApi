@@ -32,6 +32,6 @@ public function subcategory(){
 
 
     public function order(){
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class,);
     }
 }

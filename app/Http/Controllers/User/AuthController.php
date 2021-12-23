@@ -20,10 +20,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
+
+
+
     public function signup(SignupFormRequest $request)
     {
-           
+
         $user = User::create(
             [   'name' => $request->name,
                 'email' => $request->email,
@@ -33,9 +36,9 @@ class AuthController extends Controller
                 'country_id'=>$request->country
 
             ]);
-      
-            // $user->assignRole($request->role); 
-                
+
+            // $user->assignRole($request->role);
+
             if($user->role=='storeOwner'){
                 $store=Store::create([
                     'name'=>$request->storeName,
@@ -54,16 +57,16 @@ class AuthController extends Controller
                     'instagram'=>$request->instagram,
                     'twitter'=>$request->twitter,
                     'store_owner_id'=>$user->id
-                ]); 
-             
-                      
+                ]);
+
+
 
               $token = JWTAuth::fromUser($user);
               $fullUser=User::find($user->id);
-           
+
               $responseData= collect($fullUser)->merge([
                 'store' => $store,
-            ]);  
+            ]);
             // $user->sendEmailVerificationNotification();
               return $this->dataResponse(["user"=>$responseData,"token"=>$token]);
             }
@@ -73,7 +76,7 @@ class AuthController extends Controller
                 {
                     return response()->json('must choose city',406); //unacceptable
                 }
-                
+
                 $customer=Customer::create([
                     'id'=>$user->id,
                     'city_id'=>$request->city,
@@ -84,14 +87,14 @@ class AuthController extends Controller
 
                 $responseData= collect($fullUser)->merge([
                     'customer' => $customer,
-                ]);  
+                ]);
                 return $this->dataResponse(["user"=>$responseData,"token"=>$token]);
             }
-          
-       
+
+
     }
 
-    
+
     public function login(LoginFormRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -100,16 +103,16 @@ class AuthController extends Controller
             $user=Auth::guard('api')->user();
 
             if($user->role=='storeOwner'){
-            
+
 
                 return $this->dataResponse(["user"=> $user,"token"=>$token]);
- 
+
             }
             elseif($user->role=='customer'){
                 $Customer=Customer::find($user->id);
                 $responseDataCustomer= collect($user)->merge([
                     'Customer' => $Customer,
-                ]);  
+                ]);
                 return $this->dataResponse(["user"=> $responseDataCustomer,"token"=>$token]);
 
             }
@@ -118,10 +121,10 @@ class AuthController extends Controller
             return $this->errorResponse('wrong Email Or password',500);
         }
 
-           
 
-        
+
+
         }
 
-   
+
 }

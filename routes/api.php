@@ -45,7 +45,11 @@ Route::group(['prefix'=>'store'],function (){
     Route::delete('/{id}','Store\StoreController@destroy');
 
 });
+Route::group(['prefix'=>'admin','middleware'=>'assign.guard:Admin'],function (){
+   Route::post('signup','Admin\AdminController@signupAdmin')->withoutMiddleware('assign.guard:Admin');
+   Route::post('login','Admin\AdminController@login')->withoutMiddleware('assign.guard:Admin');
 
+});
 
 
 Route::group(['prefix'=>'product'],function (){

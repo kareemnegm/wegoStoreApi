@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'user'],function (){
     Route::post('signup','User\AuthController@signup');
     Route::post('login','User\AuthController@login');
-    Route::post('create/plan','StoreOwner\StoreOwnerController@createPlan');
 });
 
 Route::group(['prefix'=>'category'],function (){
@@ -45,6 +44,18 @@ Route::group(['prefix'=>'store'],function (){
     Route::delete('/{id}','Store\StoreController@destroy');
 
 });
+
+
+
+Route::group(['prefix'=>'plan'],function (){
+    Route::post('create','Admin\AdminController@createPlan')->middleware('assign.guard:Admin');
+    Route::get('/','Admin\AdminController@showPlans');
+    Route::get('/{id}','Admin\AdminController@showPlans');
+
+
+});
+
+
 Route::group(['prefix'=>'admin','middleware'=>'assign.guard:Admin'],function (){
    Route::post('signup','Admin\AdminController@signupAdmin')->withoutMiddleware('assign.guard:Admin');
    Route::post('login','Admin\AdminController@login')->withoutMiddleware('assign.guard:Admin');
@@ -55,6 +66,7 @@ Route::group(['prefix'=>'admin','middleware'=>'assign.guard:Admin'],function (){
 Route::group(['prefix'=>'product'],function (){
 Route::post('/','Product\ProductController@createProduct')->middleware('assign.guard:api');
 Route::delete('/{id}','Product\ProductController@destroy')->middleware('assign.guard:api');
+
 
 });
 

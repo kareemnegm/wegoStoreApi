@@ -35,16 +35,7 @@ class StoreOwnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function createPlan(Request $request)
-    {
-        $plan= Plan::create([
-            'name'=>$request->name,
-            'price'=>$request->price,
-            'duration'=>$request->duration,
-            'maximum_product_per_store'=>$request->maximum_product_per_store
-        ]);
-        return response()->json($plan,201);
-    }
+   
 
     /**
      * Display the specified resource.

@@ -40,6 +40,7 @@ Route::post('/subcategory','Category\CategoryController@createSubcategory');
 
 Route::group(['prefix'=>'store'],function (){
     Route::get('/','Store\StoreController@getStores');
+    Route::get('/products/{id}','Store\StoreController@getStoreProductsForCustomers');
     Route::get('/{id}','Store\StoreController@getstore');
     Route::delete('/{id}','Store\StoreController@destroy');
 
@@ -65,7 +66,19 @@ Route::group(['prefix'=>'admin','middleware'=>'assign.guard:Admin'],function (){
 
 Route::group(['prefix'=>'product'],function (){
 Route::post('/','Product\ProductController@createProduct')->middleware('assign.guard:api');
+Route::post('/addAttribute/{id}','Product\ProductController@addAttributeToProduct')->middleware('assign.guard:api');
 Route::delete('/{id}','Product\ProductController@destroy')->middleware('assign.guard:api');
+Route::get('/{id}','Product\ProductController@show');
+
+
+
+});
+
+
+Route::group(['prefix'=>'storeOwner'],function (){
+Route::get('/store/prodcuts','storeOwner/storeOwnerController@getStoreProducts')->middleware('assign.guard:api');
+
+
 
 
 });

@@ -4,7 +4,12 @@ namespace App\Http\Controllers\StoreOwner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Models\Product;
+use App\Models\Store;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StoreOwnerController extends Controller
 {
@@ -23,19 +28,29 @@ class StoreOwnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function getStoreProducts()
     {
-
-
+        try {
+            $user = User::find(Auth::id());
+            if ($user->role == 'storeOwner') {
+                $store = Store::where('store_owner_id', $user->id)->exists();
+                if ($store == true) {
+                    $store_id = Store::where('store_owner_id', $user->id)->value('id');
+                    $products = Product::where('store_id', $store_id)->select()->get();
+                    return response()->json($products, 200);
+                }
+            }
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   
+
 
     /**
      * Display the specified resource.

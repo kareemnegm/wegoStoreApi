@@ -24,13 +24,16 @@ class SignupFormRequest extends BaseFormRequest
      */
     public function rules()
     {
-       
+
             return [
                 'name' => 'required|string',
                 'email' => 'required|string|email|unique:users',
                 'password' => 'required|min:8|confirmed',
                 'role'=> 'required|in:storeOwner,customer',
+                'plan_id'=> 'exists:plans,id',
+                'country'=> 'required|exists:countries,id',
+                'city'=> 'required|exists:cities,id'
                             ];
-       
+
     }
 }

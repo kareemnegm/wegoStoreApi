@@ -14,6 +14,11 @@ class Customer extends Authenticatable implements JWTSubject
     protected $fillable=[
         'id',
         'city_id',
+        'phone_number',
+        'street_name',
+        'building_number',
+        'flat_number',
+        'address_notes' //optional
     ];
 
     public function user(){

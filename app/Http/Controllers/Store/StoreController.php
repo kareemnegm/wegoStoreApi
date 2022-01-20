@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Store;
 use App\Models\StoreOwner;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -17,7 +19,7 @@ class StoreController extends Controller
      */
     public function getStores()
     {
-        $stores= Store::select('*')->get();
+        $stores= Store::all();
         if($stores==null){
             return response()->json('no stores yet',200);
         }else{
@@ -25,16 +27,19 @@ class StoreController extends Controller
 
         }
     }
-
-   
-    public function create()
+    public function getStoreProductsForCustomers($id)
     {
-    //    in store owner creation
+        try {$store=Store::find($id);
+            if($store==null){
+                return response()->json('no stores found',404);
+            }
+            $products=Product::where('store_id',$store->id)->get();
+            return response()->json($products,200);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage());
+        }
     }
 
-   
-
-   
     public function getstore($id)
     {
         $store=Store::find($id);
@@ -44,7 +49,7 @@ class StoreController extends Controller
         $user=User::find($store->store_owner_id);
         $response=collect($store)->merge([
             'user'=>$user
-        ]); 
+        ]);
         return response()->json($response,200);
     }
     }

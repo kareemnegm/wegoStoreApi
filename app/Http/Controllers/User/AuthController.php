@@ -96,6 +96,7 @@ class AuthController extends Controller
 
     public function login(LoginFormRequest $request)
     {
+        
         $credentials = $request->only('email', 'password');
         if ($token = Auth::guard('api')->attempt($credentials)) {
             $user = Auth::guard('api')->user();

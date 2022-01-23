@@ -68,7 +68,7 @@ Route::group(['prefix'=>'product'],function (){
 Route::post('/','Product\ProductController@createProduct')->middleware('assign.guard:api');
 Route::post('/addAttribute/{id}','Product\ProductController@addAttributeToProduct')->middleware('assign.guard:api');
 Route::delete('/{id}','Product\ProductController@destroy')->middleware('assign.guard:api');
-Route::get('/{id}','Product\ProductController@show');
+Route::get('/{id}','Product\ProductController@getProduct');
 
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\SubCategory;
@@ -10,10 +11,11 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Stmt\Catch_;
-
+use App\Http\Traits\storeImage;
 class ProductController extends Controller
 {
+
+use storeImage;
 
     public function createProduct(Request $request)
     {
@@ -36,8 +38,6 @@ class ProductController extends Controller
                                     'price' => $request->price,
                                     'SKU' => $request->SKU,
                                     'quantity' => $request->quantity,
-                                    'product_display' => $request->product_display,
-                                    'product_images' => $request->product_images,
                                     'rating_display' => $request->rating_display,
                                     'rating' => $request->rating,
                                     'description' => $request->description,
@@ -48,6 +48,7 @@ class ProductController extends Controller
                                     'productExtraAttributes' => json_decode($request->productExtraAttributes, true)
                                 ]);
                                 $product->subcategory()->attach($request->subcategory_id);
+                                $this->imageUpload($request, $product->id);
                                 return response()->json($product, 201);
                             } else {
                                 return response()->json('not authorized to add products to this subcategory ', 401);
@@ -65,7 +66,7 @@ class ProductController extends Controller
     public function getProduct($id)
     {
         try {
-            $product = Product::find($id);
+            $product = Product::where('id',$id)->with('images')->get();
             return response()->json($product, 200);
         } catch (Exception $e) {
             return response()->json($e->getMessage());
@@ -73,32 +74,28 @@ class ProductController extends Controller
     }
 
 
-    public function addAttributeToProduct($productId,Request $request)
+    public function addAttributeToProduct($productId, Request $request)
     {
-        try{
-            $user=User::find(Auth::id());
-            if($user==null){
-                return response()->json('not authorized to edit this product',401);
+        try {
+            $user = User::find(Auth::id());
+            if ($user == null) {
+                return response()->json('not authorized to edit this product', 401);
             }
-            $product=Product::find($productId);
-            if($product->created_by==$user->id){
-                $product->productExtraAttributes= array_merge($product->productExtraAttributes,(json_decode($request->productExtraAttributes, true)));
+            $product = Product::find($productId);
+            if ($product->created_by == $user->id) {
+                $product->productExtraAttributes = array_merge($product->productExtraAttributes, (json_decode($request->productExtraAttributes, true)));
                 $product->save();
-                return response()->json($product,200);
+                return response()->json($product, 200);
+            } else {
+                return response()->json('not authorized to edit this product', 401);
             }
-            else
-            {
-                return response()->json('not authorized to edit this product',401);
-            }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json($e->getMessage());
         }
-
     }
 
     public function update(Request $request, $id)
     {
-
     }
 
 

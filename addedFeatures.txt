@@ -1,0 +1,5 @@
+added shipping cost to products table
+added enum trait with enum exception handler
+added cart module and created its functionalities and validations
+added shipping module and controllers
+handling cost of products before shipping 

@@ -22,7 +22,7 @@ class OrderController extends Controller
         else{
             if($user->id==Auth::user()->id){
                 $validatedData = $request->validated();
-              
+
                 $order=Order::create([
                     'name'=>$request->name,
                     'email'=>Auth::user()->email,
@@ -30,7 +30,6 @@ class OrderController extends Controller
                     'card_exp_month'=>$validatedData['card_exp_month'],
                     'card_exp_year'=>$validatedData['card_exp_year'],
                     'card_exp_day'=>$request->day,
-                    'shipping_data'=>$request->shipping_data,
                     'price'=>$request->price,
                     'coupon'=>$request->coupon,
                     'net_price_discount'=>$request->price,

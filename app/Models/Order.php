@@ -15,7 +15,6 @@ class Order extends Model
         'card_exp_day',
         'card_exp_month',
         'card_exp_year',
-        'shipping_data',
         'price',
         'coupon',
         'net_price_discount',
@@ -27,6 +26,9 @@ class Order extends Model
 public function product(){
     return $this->belongsToMany(Product::class,);
 
+}
+public function shipping(){
+    return $this->hasOne(Shipping::class);
 }
 
 }

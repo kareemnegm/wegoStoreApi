@@ -32,7 +32,11 @@ class SignupFormRequest extends BaseFormRequest
                 'role'=> 'required|in:storeOwner,customer',
                 'plan_id'=> 'exists:plans,id',
                 'country'=> 'required|exists:countries,id',
-                'city'=> 'required|exists:cities,id'
+                'city'=> 'required|exists:cities,id',
+                'building_number'=>'required_if:role,customer',
+                'flat_number'=>'required_if:role,customer',
+                'address_notes'=>'required_if:role,customer',
+                'street_name'=>'required_if:role,customer',
                             ];
 
     }

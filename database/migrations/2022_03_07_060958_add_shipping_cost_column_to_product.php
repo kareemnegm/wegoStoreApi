@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RmAttributeProductTable extends Migration
+class AddShippingCostColumnToProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class RmAttributeProductTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('product_images');
+            $table->double('shipping_cost');
         });
     }
 
@@ -26,7 +26,7 @@ class RmAttributeProductTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('product_images');
+            $table->dropColumn('shipping_cost');
         });
     }
 }

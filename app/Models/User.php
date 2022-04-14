@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
-        'password',  
+        'password',
         'role',
         'country_id',
         'city_id'
@@ -33,6 +33,9 @@ public function store(){
 
 public function customer(){
     return $this->hasOne(Customer::class);
+}
+public function cart(){
+    return $this->hasOne(Cart::class);
 }
 
 // user belongs to country & city

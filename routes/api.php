@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'user'],function (){
     Route::post('signup','User\AuthController@signup');
     Route::post('login','User\AuthController@login');
+
 });
 
 Route::group(['prefix'=>'category'],function (){
@@ -60,6 +61,7 @@ Route::group(['prefix'=>'plan'],function (){
 Route::group(['prefix'=>'admin','middleware'=>'assign.guard:Admin'],function (){
    Route::post('signup','Admin\AdminController@signupAdmin')->withoutMiddleware('assign.guard:Admin');
    Route::post('login','Admin\AdminController@login')->withoutMiddleware('assign.guard:Admin');
+   Route::post('promoCodes','Admin\CouponController@CreateCoupon');
 
 });
 
@@ -76,11 +78,16 @@ Route::get('/{id}','Product\ProductController@getProduct');
 
 
 Route::group(['prefix'=>'storeOwner'],function (){
-Route::get('/store/prodcuts','storeOwner/storeOwnerController@getStoreProducts')->middleware('assign.guard:api');
+Route::get('/store/prodcuts','storeOwner\storeOwnerController@getStoreProducts')->middleware('assign.guard:api');
 
 
 
 
+});
+Route::group(['prefix'=>'customer'],function (){
+Route::post('/cart','Customer\CustomerController@addProductToCart')->middleware('assign.guard:api');
+Route::get('/myCart','Customer\CustomerController@getMyCart')->middleware('assign.guard:api');
+Route::post('/shipping','Shipping\ShippingController@createShipping')->middleware('assign.guard:api');
 });
 
 

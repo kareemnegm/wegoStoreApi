@@ -24,7 +24,8 @@ class Product extends Model
         'detail',
         'created_by',
         'store_id',
-        'productExtraAttributes'
+        'productExtraAttributes',
+        'shipping_cost'
     ];
     public $timestamps = false;
 
@@ -41,8 +42,14 @@ public function subcategory(){
 
 
 
+    public function cart(){
+        return $this->belongsToMany(Cart::class,);
+    }
     public function order(){
         return $this->belongsToMany(Product::class,);
+    }
+    public function coupons(){
+        return $this->belongsToMany(Coupon::class,);
     }
 
 

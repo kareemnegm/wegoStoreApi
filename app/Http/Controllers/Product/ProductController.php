@@ -12,10 +12,11 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\storeImage;
+
 class ProductController extends Controller
 {
 
-use storeImage;
+    use storeImage;
 
     public function createProduct(Request $request)
     {
@@ -43,6 +44,7 @@ use storeImage;
                                     'description' => $request->description,
                                     'specification' => $request->specification,
                                     'detail' => $request->detail,
+                                    'shipping_cost' => $request->shipping_cost,
                                     'created_by' => Auth::id(),
                                     'store_id' => $storeID,
                                     'productExtraAttributes' => json_decode($request->productExtraAttributes, true)
@@ -66,7 +68,7 @@ use storeImage;
     public function getProduct($id)
     {
         try {
-            $product = Product::where('id',$id)->with('images')->get();
+            $product = Product::where('id', $id)->with('images')->get();
             return response()->json($product, 200);
         } catch (Exception $e) {
             return response()->json($e->getMessage());
@@ -98,6 +100,9 @@ use storeImage;
     {
     }
 
+    public function applyCoupon(Request $request){
+    
+    }
 
     public function destroy($id)
     {

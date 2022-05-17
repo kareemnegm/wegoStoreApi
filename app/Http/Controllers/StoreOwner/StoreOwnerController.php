@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\StoreOwner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CouponRequestHandler;
+use App\Models\Coupon;
+use App\Models\CouponForTotalOrder;
 use App\Models\Plan;
 use App\Models\Product;
 use App\Models\Store;
@@ -13,15 +16,6 @@ use Illuminate\Support\Facades\Auth;
 
 class StoreOwnerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -63,16 +57,7 @@ class StoreOwnerController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -81,9 +66,9 @@ class StoreOwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateStoreProducts(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -92,8 +77,52 @@ class StoreOwnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteProduct($id)
     {
-        //
+        try{
+            $product=Product::find($id);
+            if($product==null)return response()->json('no product found',500);
+            $product->delete();
+            return response()->json('product deleted successfully',200);
+
+        }catch(Exception $err){
+            return response()->json($err);
+
+        }
+    }
+
+
+    public function CreateCoupon(CouponRequestHandler $request)
+    {
+        try {
+            $newCoupon = new Coupon();
+            $newCoupon->code = $request->code;
+            $newCoupon->type = $request->type;
+            $newCoupon->startDate = $request->startDate;
+            $newCoupon->endDate = $request->endDate;
+            $newCoupon->discount_type = $request->discount_type;
+            $newCoupon->discount = $request->discount;
+            $newCoupon->save();
+            if ($request->type == 'totalOrder') {
+                $couponForTotalOrder = CouponForTotalOrder::create([
+                    'minimum_shopping' => $request->minimum_shopping,
+                    'maximum_discount_amount' => $request->maximum_discount_amount,
+                    'coupon_id' => $newCoupon->id
+                ]);
+            } elseif ($request->type == 'product') {
+                $productArray = [];
+                $products = json_decode($request->products, true);
+                foreach ($products as $product) {
+                    $productArray[] = $product;
+                }
+                $newCoupon->product()->attach($productArray);
+            }
+            return response()->json($newCoupon,201);
+        } catch (Exception $err) {
+            return response()->json($err);
+        }
+    }
+    public function showCoupons($id){
+        $coupons=Coupon::where('');
     }
 }

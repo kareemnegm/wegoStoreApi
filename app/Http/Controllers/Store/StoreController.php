@@ -19,22 +19,22 @@ class StoreController extends Controller
      */
     public function getStores()
     {
-        $stores= Store::all();
-        if($stores==null){
-            return response()->json('no stores yet',200);
-        }else{
-            return response()->json($stores,200);
-
+        $stores = Store::all();
+        if ($stores == null) {
+            return response()->json('no stores yet', 200);
+        } else {
+            return response()->json($stores, 200);
         }
     }
     public function getStoreProductsForCustomers($id)
     {
-        try {$store=Store::find($id);
-            if($store==null){
-                return response()->json('no stores found',404);
+        try {
+            $store = Store::find($id);
+            if ($store == null) {
+                return response()->json('no stores found', 404);
             }
-            $products=Product::where('store_id',$store->id)->get();
-            return response()->json($products,200);
+            $products = Product::where('store_id', $store->id)->get();
+            return response()->json($products, 200);
         } catch (Exception $e) {
             return response()->json($e->getMessage());
         }
@@ -42,16 +42,16 @@ class StoreController extends Controller
 
     public function getstore($id)
     {
-        $store=Store::find($id);
-        if($store==null){
-            return response()->json('no stores found',404);
-        }else{
-        $user=User::find($store->store_owner_id);
-        $response=collect($store)->merge([
-            'user'=>$user
-        ]);
-        return response()->json($response,200);
-    }
+        $store = Store::find($id);
+        if ($store == null) {
+            return response()->json('no stores found', 404);
+        } else {
+            $user = User::find($store->store_owner_id);
+            $response = collect($store)->merge([
+                'user' => $user
+            ]);
+            return response()->json($response, 200);
+        }
     }
 
 
@@ -62,9 +62,16 @@ class StoreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     //store settings
+    //  not added yet
     public function update(Request $request, $id)
     {
-        //
+        $store = Store::find($id);
+        $store->name = $request->storeName;
+        $store->address = $request->storeAddress;
+        $store->currency = $request->currency;
+        $store->about = $request->about;
     }
 
     /**
@@ -75,17 +82,15 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        $store=Store::find($id);
-        if($store==null){
-            return response()->json('no store found',404);
-        }
-        else{
-            $deleted=$store->delete();
-            if($deleted==true){
-                return response()->json('store have been deleted',200);
-            }
-            else{
-                return response()->json('error occured',500);
+        $store = Store::find($id);
+        if ($store == null) {
+            return response()->json('no store found', 404);
+        } else {
+            $deleted = $store->delete();
+            if ($deleted == true) {
+                return response()->json('store have been deleted', 200);
+            } else {
+                return response()->json('error occured', 500);
             }
         }
     }

@@ -16,6 +16,7 @@ class Coupon extends Model
         'endDate',
         'discount_type',
         'discount',
+        'store_owner_id',// foreign key nullable to be made in migrations 
 
     ];
 
@@ -27,4 +28,10 @@ class Coupon extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
+
 }

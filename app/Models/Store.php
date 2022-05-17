@@ -18,14 +18,15 @@ class Store extends Model
         'logo',
         'is_active',
         'store_theme',
-        'theme_dir',
+        'theme_dir', //theme dir id to be handled with the front end developer 
         'store_link',
         'facebook',
         'whatsapp',
         'instagram',
         'twitter',
         'store_owner_id',
-        'plan_id'
+        'plan_id',
+
     ];
     public function product(){
         return $this->hasMany(Product::class);

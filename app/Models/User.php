@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -23,30 +24,44 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
-//user has  storeOwner
+    //user has  storeOwner
 
-public function store(){
-    return $this->hasOne(Store::class,'store_owner_id');
-}
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'store_owner_id');
+    }
 
-//user has  customer
+    //user has  customer
 
-public function customer(){
-    return $this->hasOne(Customer::class);
-}
-public function cart(){
-    return $this->hasOne(Cart::class);
-}
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
+    }
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 
-// user belongs to country & city
+    // user belongs to country & city
 
-public function country(){
-    return $this->belongsTo('App\Models\Country','id','country_id');
-}
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country', 'id', 'country_id');
+    }
 
-public function city(){
-    return $this->belongsTo('App\Models\City','id','City_id');
-}
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City', 'id', 'City_id');
+    }
+
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class);
+    }
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -79,8 +94,7 @@ public function city(){
     {
         return [
             'id' => $this->id,
-                'role' =>$this->role
+            'role' => $this->role
         ];
     }
-
 }

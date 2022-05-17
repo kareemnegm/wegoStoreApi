@@ -17,7 +17,7 @@ class Shipping extends Model
         "country_id",
         "city_id",
         "user_id",
-        "cart_id",// de holds all of the products details
+        "order_id",// de holds all of the products details
     ];
 
 

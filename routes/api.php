@@ -78,7 +78,7 @@ Route::get('/{id}','Product\ProductController@getProduct');
 
 
 Route::group(['prefix'=>'storeOwner'],function (){
-Route::get('/store/prodcuts','storeOwner\storeOwnerController@getStoreProducts')->middleware('assign.guard:api');
+Route::get('/store/products','storeOwner\storeOwnerController@getStoreProducts')->middleware('assign.guard:api');
 
 
 
@@ -87,7 +87,7 @@ Route::get('/store/prodcuts','storeOwner\storeOwnerController@getStoreProducts')
 Route::group(['prefix'=>'customer'],function (){
 Route::post('/cart','Customer\CustomerController@addProductToCart')->middleware('assign.guard:api');
 Route::get('/myCart','Customer\CustomerController@getMyCart')->middleware('assign.guard:api');
-Route::post('/shipping','Shipping\ShippingController@createShipping')->middleware('assign.guard:api');
+Route::post('/shipping/{order_id}','Shipping\ShippingController@createShipping')->middleware('assign.guard:api');
 });
 
 

@@ -19,6 +19,8 @@ class Order extends Model
         'coupon',
         'net_price_discount',
         'status',
+        "shipping_data",
+        'payment'
 
     ];
     //order has many to  many  product
@@ -26,6 +28,9 @@ class Order extends Model
 public function product(){
     return $this->belongsToMany(Product::class,);
 
+}
+public function user(){
+    return $this->belongsTo(User::class);
 }
 public function shipping(){
     return $this->hasOne(Shipping::class);

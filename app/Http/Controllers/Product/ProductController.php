@@ -98,10 +98,11 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        
     }
 
     public function applyCoupon(Request $request){
-    
+
     }
 
     public function destroy($id)

@@ -23,13 +23,13 @@ class CreateShippingsTable extends Migration
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('cart_id');
+            $table->unsignedBigInteger('order_id');
             $table->timestamps();
             //foreign keys
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

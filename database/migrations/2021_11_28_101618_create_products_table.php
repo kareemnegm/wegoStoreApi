@@ -20,7 +20,6 @@ class CreateProductsTable extends Migration
             $table->integer('quantity')->default(0);
             $table->integer('SKU');
             $table->string('product_display')->default('https://via.placeholder.com/500/EE297E/343149?text=No+image');
-            $table->string('product_images'); //many to many
             $table->integer('rating_display')->default(0); //true or false
             $table->integer('rating')->default(0); // to be handled
             $table->string('description',1000);
@@ -29,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->integer('created_by')->default(0);
             $table->unsignedBigInteger('store_id');
             $table->json('productExtraAttributes');
+            $table->double('shipping_cost');
             $table->timestamps();
             //foreign key
             $table->foreign('store_id')->references('id')->on('stores')->onUpdate('cascade')->onDelete('cascade');

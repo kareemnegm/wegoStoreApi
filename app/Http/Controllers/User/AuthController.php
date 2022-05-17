@@ -10,6 +10,7 @@ use App\Models\StoreOwner;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\LoginFormRequest;
+use App\Models\Cart;
 use App\Models\Plan;
 use App\Models\Store;
 use Exception;
@@ -81,7 +82,7 @@ class AuthController extends Controller
                 $user->customer = ["city_id" => $customer->city_id];
                 $token = JWTAuth::fromUser($user);
                 $fullUser = User::find($user->id);
-
+                $cart = Cart::create(['name' => 'my cart', 'user_id' => $user->id]);
                 $responseData = collect($fullUser)->merge([
                     'customer' => $customer,
                 ]);
@@ -96,7 +97,7 @@ class AuthController extends Controller
 
     public function login(LoginFormRequest $request)
     {
-        
+
         $credentials = $request->only('email', 'password');
         if ($token = Auth::guard('api')->attempt($credentials)) {
             $user = Auth::guard('api')->user();

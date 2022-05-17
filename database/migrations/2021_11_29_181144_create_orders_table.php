@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('email');
             $table->bigInteger('card_number');
             $table->smallInteger('card_exp_day');
@@ -25,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('coupon');
             $table->double('net_price_discount');
             $table->tinyInteger('status');
+            $table->enum('payment',['true','false'])->default('false');
             $table->timestamps();
 
         });

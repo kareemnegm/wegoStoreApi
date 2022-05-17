@@ -23,7 +23,7 @@ class AdminController extends Controller
         $token = JWTAuth::fromUser($admin);
 
 
-        response(['admin' => $admin, "token" => $token]);
+        return response(['admin' => $admin, "token" => $token]);
     }
 
     public function login(loginFormRequestAdmin $request)

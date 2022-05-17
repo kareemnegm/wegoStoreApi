@@ -24,16 +24,18 @@ class OrderController extends Controller
                 $validatedData = $request->validated();
 
                 $order=Order::create([
-                    'name'=>$request->name,
+                    'name'=>$user->name.rand(),
                     'email'=>Auth::user()->email,
                     'card_number'=>$validatedData['card_number'],
                     'card_exp_month'=>$validatedData['card_exp_month'],
                     'card_exp_year'=>$validatedData['card_exp_year'],
                     'card_exp_day'=>$request->day,
                     'price'=>$request->price,
+                    'shipping_data'=>$request->shipping_data,
                     'coupon'=>$request->coupon,
                     'net_price_discount'=>$request->price,
-                    'status'=>0
+                    'status'=>0,
+                    
                 ]);
                 $products=json_decode($request->products,true);
 
